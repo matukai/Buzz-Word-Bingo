@@ -6,7 +6,7 @@ let buzzArray = []
 let test = {
   buzzWord: 'Agile',
   points: 100
-}
+};
 buzzArray.push(test);
 
 router.get('/', function (req, res) {
@@ -30,21 +30,33 @@ router.post('/', function (req, res) {
 
 router.put('/', function (req, res) {
   const body = req.body;
-
   let updatedBuzzWord = buzzArray.filter(function (element) {
     return element.buzzWord === body.buzzWord
   }).map((element) => {
     element.points = body.points;
     return element;
   })
-  let response
+  let response;
   if(updatedBuzzWord.length){
     response = true
   } else {
     response = false
   }
   res.json({"success" : response});
-})
+});
+
+router.delete('/', function (req, res) {
+  const body = req.body;
+  let response;
+  let ind = buzzArray.findIndex(element => element.buzzWord === body.buzzWord);
+  if(ind >= 0){
+    buzzArray.splice(ind,1);
+    response = true;
+  }else{
+    response = false;
+  }
+  res.json({"success" : response});
+});
 
 
 module.exports = router
