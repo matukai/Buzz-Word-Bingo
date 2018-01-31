@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/buzzwords');
 
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 4567;
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
