@@ -1,39 +1,50 @@
 const express = require('express');
 const router = express.Router();
 let newScore = 0;
-let buzzArray = [];
+let buzzArray = []
 
-let test = {buzzWord: 'Agile', points: 100, heard: false}
+let test = {
+  buzzWord: 'Agile',
+  points: 100
+}
 buzzArray.push(test);
 
 router.get('/', function (req, res) {
-  res.send(buzzArray);
+  res.json({
+    buzzWord: buzzArray
+  });
 });
 
 router.post('/', function (req, res) {
-  if(buzzArray.length < 5){
+  if (buzzArray.length < 5) {
     buzzArray.push(req.body);
     res.send({
       "success": true
     })
-  }else{
+  } else {
     res.send({
-      "buzzWords FULL" : false
+      "buzzWords FULL": false
     })
   }
 });
 
 router.put('/', function (req, res) {
-  if(buzzArray.includes(req.buzzWord)){
-    buzzArray.filter(function (element) {
-      element.points = req.body.points;
-      res.send({
-        "success": true
-      })
-    })
-  }else{
-    res.send({
-      'your word does not exist' : false
-    })
+  const body = req.body;
+
+  let updatedBuzzWord = buzzArray.filter(function (element) {
+    return element.buzzWord === body.buzzWord
+  }).map((element) => {
+    element.points = body.points;
+    return element;
+  })
+  let response
+  if(updatedBuzzWord.length){
+    response = true
+  } else {
+    response = false
   }
+  res.json({"success" : response});
 })
+
+
+module.exports = router
